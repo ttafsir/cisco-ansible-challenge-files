@@ -1,0 +1,14 @@
+---
+hostname: csr-testlab-csr3
+interfaces:
+  - name: Gi0/1
+    description: csr-testlab-csr2:Gi0/2 - configured by Ansible
+    enabled: true
+
+l3_interfaces:
+  - name: loopback0
+    ipv4:
+    - address: 3.3.3.3/32
+  - name: Gi0/1
+    ipv4:
+    - address: 192.168.23.3/24
