@@ -1,8 +1,8 @@
 ---
-hostname: csr-testlab-csr3
+hostname: testlab-csr3
 interfaces:
   - name: Gi0/1
-    description: csr-testlab-csr2:Gi0/2 - configured by Ansible
+    description: testlab-csr2:Gi0/2 - configured by Ansible
     enabled: true
 
 l3_interfaces:
