@@ -12,3 +12,15 @@ l3_interfaces:
   - name: Gi0/1
     ipv4:
     - address: 192.168.12.1/24
+
+routing:
+  ospf:
+    interfaces:
+      - name: Gi0/1
+        address_family:
+          - afi: ipv4
+            process:
+              id: 1
+              area_id: 0
+            adjacency: true
+            shutdown: false

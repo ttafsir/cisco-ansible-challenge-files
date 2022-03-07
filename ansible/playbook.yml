@@ -1,0 +1,21 @@
+---
+- name: CONFIGURE OSPF ROUTING
+  hosts: vr-csr
+  gather_facts: false
+
+  tasks:
+
+  - name: Interfaces | Configure layer 2 interface details
+    cisco.ios.ios_l2_interfaces:
+      config: "{{ interfaces }}"
+      state: merged
+
+  - name: Interfaces | Configure layer 3 interface details
+    cisco.ios.ios_l3_interfaces:
+      config: "{{ l3_interfaces }}"
+      state: merged
+
+  - name: Routing | Configure OSPFv2 interfaces
+    cisco.ios.ios_ospf_interfaces:
+      config: "{{ routing.ospf.interfaces }}"
+      state: merged
