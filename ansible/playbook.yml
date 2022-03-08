@@ -15,6 +15,13 @@
       config: "{{ l3_interfaces }}"
       state: merged
 
+  - name: Routing | Configure OSPF process
+    cisco.ios.ios_ospfv2:
+      config: "{{ process_100_config | default(omit) }}"
+      state: merged
+    vars:
+      process_100_config: "{{ routing.ospf.processes | selectattr('process_id', 'eq', 100) }}"
+
   - name: Routing | Configure OSPFv2 interfaces
     cisco.ios.ios_ospf_interfaces:
       config: "{{ routing.ospf.interfaces }}"

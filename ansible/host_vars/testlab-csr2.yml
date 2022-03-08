@@ -38,3 +38,6 @@ routing:
               area_id: 0
             adjacency: true
             shutdown: false
+    processes:
+      - process_id: 100
+        router_id: 2.2.2.2
