@@ -17,7 +17,8 @@
 
   - name: Routing | Configure OSPF process
     cisco.ios.ios_ospfv2:
-      config: "{{ process_100_config | default(omit) }}"
+      config:
+        processes: "{{ process_100_config | default([]) }}"
       state: merged
     vars:
       process_100_config: "{{ routing.ospf.processes | selectattr('process_id', 'eq', 100) }}"
