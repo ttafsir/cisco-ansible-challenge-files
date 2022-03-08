@@ -5,7 +5,7 @@
 
   tasks:
 
-  - name: Interfaces | Configure layer 2 interface details
+  - name: Interfaces | Configure basic interface details
     cisco.ios.ios_interfaces:
       config: "{{ interfaces }}"
       state: merged
