@@ -26,7 +26,7 @@ routing:
         address_family:
           - afi: ipv4
             process:
-              id: 1
+              id: 100
               area_id: 0
             adjacency: true
             shutdown: false
@@ -34,7 +34,7 @@ routing:
         address_family:
           - afi: ipv4
             process:
-              id: 1
+              id: 100
               area_id: 0
             adjacency: true
             shutdown: false
