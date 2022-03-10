@@ -1,0 +1,44 @@
+testbed:
+    name: sampleTestbed
+    alias: topologySampleTestbed
+
+devices:
+  csr1:
+    connections:
+      cli:
+        ip: 172.20.20.3
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: iosxe
+    type: iosxe
+  csr2:
+    connections:
+      cli:
+        ip: 172.20.20.4
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: iosxe
+    type: iosxe
+  csr3:
+    connections:
+      cli:
+        ip: 172.20.20.2
+        protocol: ssh
+    credentials:
+      default:
+        password: admin
+        username: admin
+      enable:
+        password: admin
+    os: iosxe
+    type: iosxe
