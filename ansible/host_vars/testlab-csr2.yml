@@ -1,20 +1,43 @@
 ---
 hostname: testlab-csr2
 interfaces:
-  - name: Gi0/1
-    description: testlab-csr1:Gi0/1 - configured by Ansible
+  - name: GigabitEthernet2
+    description: testlab-csr1:GigabitEthernet2 - configured by Ansible
     enabled: true
-  - name: Gi0/2
-    description: testlab-csr3:Gi0/1 - configured by Ansible
+  - name: GigabitEthernet3
+    description: testlab-csr3:GigabitEthernet2 - configured by Ansible
     enabled: true
 
 l3_interfaces:
   - name: loopback0
     ipv4:
     - address: 2.2.2.2/32
-  - name: Gi0/1
+  - name: GigabitEthernet2
     ipv4:
     - address: 192.168.12.2/24
-  - name: Gi0/2
+  - name: GigabitEthernet3
     ipv4:
     - address: 192.168.23.2/24
+
+routing:
+  ospf:
+    interfaces:
+      - name: GigabitEthernet2
+        address_family:
+          - afi: ipv4
+            process:
+              id: 100
+              area_id: 0
+            adjacency: true
+            shutdown: false
+      - name: GigabitEthernet3
+        address_family:
+          - afi: ipv4
+            process:
+              id: 100
+              area_id: 0
+            adjacency: true
+            shutdown: false
+    processes:
+      - process_id: 100
+        router_id: 2.2.2.2
