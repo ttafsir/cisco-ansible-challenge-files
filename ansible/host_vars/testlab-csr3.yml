@@ -6,7 +6,7 @@ interfaces:
     enabled: true
 
 l3_interfaces:
-  - name: loopback0
+  - name: Loopback0
     ipv4:
     - address: 3.3.3.3/32
   - name: GigabitEthernet2

@@ -5,16 +5,6 @@
 
   tasks:
 
-  - name: Interfaces | Configure basic interface details
-    cisco.ios.ios_interfaces:
-      config: "{{ interfaces }}"
-      state: merged
-
-  - name: Interfaces | Configure layer 3 interface details
-    cisco.ios.ios_l3_interfaces:
-      config: "{{ l3_interfaces }}"
-      state: merged
-
   - name: Routing | Configure OSPF process
     cisco.ios.ios_ospfv2:
       config:
