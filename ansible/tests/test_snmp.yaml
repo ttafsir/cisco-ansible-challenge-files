@@ -1,0 +1,27 @@
+---
+- name: TEST SNMP
+  hosts: vr-csr
+  gather_facts: false
+
+  tasks:
+
+    - name: retrieve SNMP Server Settings
+      cisco.ios.ios_snmp_server:
+        state: gathered
+      register: gathered_snmp_config
+
+    - name: assert that communities match
+      assert:
+        that: gathered_snmp_config.gathered.communities == snmp_config.communities
+
+    - name: assert that snmp contact matches
+      assert:
+        that: gathered_snmp_config.gathered.contact == snmp_config.contact
+
+    - name: assert that snmp host configuration matches
+      assert:
+        that: gathered_snmp_config.gathered.hosts == snmp_config.hosts
+
+    - name: assert that snmp traps are enabled
+      assert:
+        that: gathered_snmp_config.gathered.traps == snmp_config.traps
