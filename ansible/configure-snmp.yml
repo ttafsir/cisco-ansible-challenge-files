@@ -1,0 +1,11 @@
+---
+- name: CONFIGURE SNMP
+  hosts: vr-csr
+  gather_facts: false
+
+  tasks:
+
+    - name: configure SNMP Server Settings
+      cisco.ios.ios_snmp_server:
+        config: "{{ snmp_config }}"
+        state: merged

@@ -1,5 +1,5 @@
 ---
-- name: CONFIGURE OSPF ROUTING
+- name: CONFIGURE INTERFACES
   hosts: vr-csr
   gather_facts: false
 
