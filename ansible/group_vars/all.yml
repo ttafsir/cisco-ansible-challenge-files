@@ -1,4 +1,6 @@
 ---
+ansible_command_timeout: 60
+
 snmp_config:
   communities:
   - name: snmpCommRW
