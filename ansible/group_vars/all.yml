@@ -1,0 +1,20 @@
+---
+ansible_command_timeout: 60
+
+snmp_config:
+  communities:
+  - name: snmpCommRW
+    rw: true
+  contact: john.d.engineer@example.com
+  hosts:
+  - community_string: snmpCommRW
+    host: 172.16.2.9
+    informs: true
+    version: 2c
+  traps:
+      ospf:
+        error: true
+        lsa: true
+        retransmit: true
+        state_change: true
+      syslog: true
