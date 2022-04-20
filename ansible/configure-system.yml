@@ -1,0 +1,9 @@
+---
+- name: CONFIGURE SYSTEM
+  hosts: vr-csr
+  gather_facts: false
+
+  tasks:
+    - name: hello world
+      debug: 
+        msg: Not yet implemented
