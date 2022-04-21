@@ -6,7 +6,7 @@ system_config:
   domain_search:
   - net.example.com
   - net.example.net
-  lookup_source: Management1
+  lookup_source: GigabitEthernet1
   lookup_enabled: yes
   name_servers:
     - 10.255.0.1
