@@ -1,0 +1,6 @@
+hostname {{ hostname }}
+ip domain lookup source-interface {{ lookup_source_interface }}
+ip domain name {{ ip_domain_name }}
+ip domain list {{ domain_list | _line_ | joinmatches | to_list }}
+ip name-server {{ name_servers | _line_ | split(' ') }}
+{{ lookup_disabled }} ip domain lookup

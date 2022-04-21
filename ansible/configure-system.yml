@@ -4,6 +4,11 @@
   gather_facts: false
 
   tasks:
-    - name: hello world
-      debug: 
-        msg: Not yet implemented
+    - name: Configure system settings
+      cisco.ios.ios_system:
+        hostname: "{{ inventory_hostname }}"
+        domain_name: "{{ system_config.domain_name }}"
+        domain_search: "{{ system_config.domain_search }}"
+        lookup_source: "{{ system_config.lookup_source }}"
+        lookup_enabled: "{{ system_config.lookup_enabled }}"
+        name_servers: "{{ system_config.name_servers }}"
