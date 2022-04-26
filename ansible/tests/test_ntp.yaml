@@ -11,14 +11,10 @@
 
     - name: assert that ntp servers match
       assert:
-        that: gathered_ntp_config.gathered.servers == ntp_config.servers
-        fail_msg: "FAILURE: NTP Servers do not match. Expected: {{ ntp_config.servers }} Found: {{ _found_servers }}"
-      vars:
-        _found_servers: "{{ gathered_ntp_config.gathered.servers if gathered_ntp_config.gathered.servers is defined else none }}"
+        that: gathered_ntp_config.gathered.servers|default(none) == ntp_config.servers
+        fail_msg: "FAILURE: NTP Servers do not match. Expected: {{ ntp_config.servers }} Found: {{ gathered_ntp_config.gathered.servers | default(none) }}"
 
     - name: assert that ntp source matches
       assert:
-        that: gathered_ntp_config.gathered.source == ntp_config.source
-        fail_msg: "FAILURE: NTP Servers do not match. Expected: {{ ntp_config.source }} Found: {{ _found_source }}"
-      vars:
-        _found_source: "{{ gathered_ntp_config.gathered.source if gathered_ntp_config.gathered.source is defined else none }}"
+        that: gathered_ntp_config.gathered.source|default(none) == ntp_config.source
+        fail_msg: "FAILURE: NTP Servers do not match. Expected: {{ ntp_config.source }} Found: {{ gathered_ntp_config.gathered.source | default(none) }}"

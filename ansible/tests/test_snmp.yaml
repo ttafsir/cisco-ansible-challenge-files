@@ -12,28 +12,20 @@
 
     - name: assert that communities match
       assert:
-        that: gathered_snmp_config.gathered.communities == snmp_config.communities
-        fail_msg: "FAILURE: Community string. Expected: {{ snmp_config.communities }} Found: {{ _found_comm_str }}"    
-      vars:
-        _found_comm_str: "{{ gathered_snmp_config.gathered.communities if gathered_snmp_config.gathered.communities is defined else none }}"
+        that: gathered_snmp_config.gathered.communities|default(none) == snmp_config.communities
+        fail_msg: "FAILURE: Community string. Expected: {{ snmp_config.communities }} Found: {{ gathered_snmp_config.gathered.communities | default(none) }}"    
 
     - name: assert that snmp contact matches
       assert:
-        that: gathered_snmp_config.gathered.contact == snmp_config.contact
-        fail_msg: "FAILURE: SNMP contact. Expected: {{ snmp_config.contact }} Found: {{ _found_contact }}"  
-      vars:
-        _found_contact: "{{ gathered_snmp_config.gathered.contact if gathered_snmp_config.gathered.contact is defined else none }}"
+        that: gathered_snmp_config.gathered.contact|default(none) == snmp_config.contact
+        fail_msg: "FAILURE: SNMP contact. Expected: {{ snmp_config.contact }} Found: {{ gathered_snmp_config.gathered.contact | default(none) }}"  
 
     - name: assert that snmp host configuration matches
       assert:
-        that: gathered_snmp_config.gathered.hosts == snmp_config.hosts
-        fail_msg: "FAILURE: SNMP hosts. Expected: {{ snmp_config.hosts }} Found: {{ _found_hosts }}"  
-      vars:
-        _found_hosts: "{{ gathered_snmp_config.gathered.hosts if gathered_snmp_config.gathered.hosts is defined else none }}"
+        that: gathered_snmp_config.gathered.hosts|default(none) == snmp_config.hosts
+        fail_msg: "FAILURE: SNMP hosts. Expected: {{ snmp_config.hosts }} Found: {{ gathered_snmp_config.gathered.hosts | default(none) }}"  
 
     - name: assert that snmp traps are enabled
       assert:
-        that: gathered_snmp_config.gathered.traps == snmp_config.traps
-        fail_msg: "FAILURE: SNMP traps. Expected: {{ snmp_config.traps }} Found: {{ _found_traps }}"  
-      vars:
-        _found_traps: "{{ gathered_snmp_config.gathered.traps if gathered_snmp_config.gathered.traps is defined else none }}"
+        that: gathered_snmp_config.gathered.traps|default(none) == snmp_config.traps
+        fail_msg: "FAILURE: SNMP traps. Expected: {{ snmp_config.traps }} Found: {{ gathered_snmp_config.gathered.traps | default(none) }}"  
