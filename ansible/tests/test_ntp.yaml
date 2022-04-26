@@ -4,5 +4,15 @@
   gather_facts: false
 
   tasks:
-    - name: placeholder
-      debug:
+    - name: retrieve SNMP Server Settings
+      cisco.ios.ios_ntp_global:
+        state: gathered
+      register: gathered_ntp_config
+
+    - name: assert that ntp servers match
+      assert:
+        that: gathered_ntp_config.gathered.servers == ntp_config.servers
+
+    - name: assert that ntp source matches
+      assert:
+        that: gathered_ntp_config.gathered.source == ntp_config.source

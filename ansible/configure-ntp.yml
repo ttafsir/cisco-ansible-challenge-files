@@ -4,5 +4,7 @@
   gather_facts: false
 
   tasks:
-    - name: placeholder
-      debug:
+    - name: configure NTP server settings
+      cisco.ios.ios_ntp_global:
+        config: "{{ ntp_config }}"
+        state: merged
