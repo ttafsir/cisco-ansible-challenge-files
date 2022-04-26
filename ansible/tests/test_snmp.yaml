@@ -13,15 +13,19 @@
     - name: assert that communities match
       assert:
         that: gathered_snmp_config.gathered.communities == snmp_config.communities
+        fail_msg: "FAILURE: Community string. Expected: {{ snmp_config.communities }} Found: {{ gathered_snmp_config.gathered.communities }}"    
 
     - name: assert that snmp contact matches
       assert:
         that: gathered_snmp_config.gathered.contact == snmp_config.contact
+        fail_msg: "FAILURE: SNMP contact. Expected: {{ snmp_config.contact }} Found: {{ gathered_snmp_config.gathered.contact }}"  
 
     - name: assert that snmp host configuration matches
       assert:
         that: gathered_snmp_config.gathered.hosts == snmp_config.hosts
+        fail_msg: "FAILURE: SNMP hosts. Expected: {{ snmp_config.hosts }} Found: {{ gathered_snmp_config.gathered.hosts }}"  
 
     - name: assert that snmp traps are enabled
       assert:
         that: gathered_snmp_config.gathered.traps == snmp_config.traps
+        fail_msg: "FAILURE: SNMP traps. Expected: {{ snmp_config.traps }} Found: {{ gathered_snmp_config.gathered.traps }}"  

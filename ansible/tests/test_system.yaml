@@ -24,23 +24,29 @@
     - name: assert that hostname matches
       assert:
         that: parsed_output.hostname == inventory_hostname
+        fail_msg: "FAILURE: Hostname. Expected: {{ inventory_hostname }} Found: {{ parsed_output.hostname }}"        
 
     - name: assert that ip domain name matches
       assert:
         that: parsed_output.ip_domain_name == system_config.domain_name
+        fail_msg: "FAILURE: IP domain name. Expected: {{ system_config.domain_name }} Found: {{ parsed_output.ip_domain_name }}" 
 
     - name: assert that ip domain search list matches
       assert:
         that: parsed_output.domain_list == system_config.domain_search
+        fail_msg: "FAILURE: IP domain search list. Expected: {{ system_config.domain_search }} Found: {{ parsed_output.domain_list }}" 
 
     - name: assert that lookup source interface matches
       assert:
         that: parsed_output.lookup_source_interface == system_config.lookup_source
+        fail_msg: "FAILURE: Lookup source. Expected: {{ system_config.lookup_source }} Found: {{ parsed_output.lookup_source_interface }}" 
 
     - name: assert that name servers match
       assert:
         that: parsed_output.name_servers == system_config.name_servers
+        fail_msg: "FAILURE: Name servers. Expected: {{ system_config.name_servers }} Found: {{ parsed_output.name_servers }}" 
 
     - name: assert that ip lookup is not disabled
       assert:
         that: parsed_output.lookup_disabled is not defined
+        fail_msg: "FAILURE: Lookup enabled. Expected: {{ not (parsed_output.lookup_disabled is not defined) }} Found: {{ parsed_output.lookup_disabled is not defined }}" 
