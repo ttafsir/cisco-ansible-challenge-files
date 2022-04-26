@@ -29,3 +29,11 @@ snmp_config:
         retransmit: true
         state_change: true
       syslog: true
+
+ntp_config:
+  servers:
+    - server: 0.north-america.pool.ntp.org
+      version: 2
+    - server: 1.north-america.pool.ntp.org
+      version: 2
+  source: GigabitEthernet1
