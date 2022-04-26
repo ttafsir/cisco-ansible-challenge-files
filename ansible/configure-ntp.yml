@@ -1,0 +1,8 @@
+---
+- name: CONFIGURE NTP
+  hosts: vr-csr
+  gather_facts: false
+
+  tasks:
+    - name: placeholder
+      debug:
