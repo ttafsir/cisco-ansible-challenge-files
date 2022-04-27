@@ -29,9 +29,9 @@ Verify IP address configurations
     ${csr3_interfaces}=  parse "show ip interface brief" on device "csr3"
 
     # csr1
-    ${output}= Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][protocol]  up
-    ${output}= Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.1
-    ${output}= Should Be Equal  ${csr1_interfaces}[interface][Loopback0][ip_address]  1.1.1.1
+    ${output}=  Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][protocol]  up
+    ${output}=  Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.1
+    ${output}=  Should Be Equal  ${csr1_interfaces}[interface][Loopback0][ip_address]  1.1.1.1
 
     # csr2
     ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet2][protocol]  up
