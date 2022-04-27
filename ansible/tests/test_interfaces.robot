@@ -46,4 +46,4 @@ Verify IP address configurations
     ${output}=  Should Be Equal  ${csr3_interfaces}[interface][Loopback0][ip_address]  3.3.3.3
 
     ${err_msg}=  Set Variable  "FAILURE: device interfaces do not seem to be configured properly. ${output}"    
-    [Teardown]  [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
+    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
