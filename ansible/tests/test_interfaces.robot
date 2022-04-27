@@ -34,7 +34,7 @@ Loop over devices and verify IP address configurations
     END
 
 Verify interfaces are up with correct IP address
-    [arguments]     ${cli_output}  ${interfaces}
+    [Arguments]     ${cli_output}  ${interfaces}
     FOR  ${intf}  IN  ${interfaces}
         ${name}=  Set Variable   ${intf}[name]
         ${ip_address}=  Evaluate  "${intf}[ipv4][0][address]".split("/")[0]
