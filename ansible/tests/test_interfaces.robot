@@ -29,18 +29,21 @@ Verify IP address configurations
     ${csr3_interfaces}=  parse "show ip interface brief" on device "csr3"
 
     # csr1
-    Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][protocol]  up
-    Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.1
-    Should Be Equal  ${csr1_interfaces}[interface][Loopback0][ip_address]  1.1.1.1
+    ${output}= Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][protocol]  up
+    ${output}= Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.1
+    ${output}= Should Be Equal  ${csr1_interfaces}[interface][Loopback0][ip_address]  1.1.1.1
 
     # csr2
-    Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet2][protocol]  up
-    Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet3][protocol]  up
-    Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.2
-    Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet3][ip_address]  192.168.23.2
-    Should Be Equal  ${csr2_interfaces}[interface][Loopback0][ip_address]  2.2.2.2
+    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet2][protocol]  up
+    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet3][protocol]  up
+    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.2
+    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet3][ip_address]  192.168.23.2
+    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][Loopback0][ip_address]  2.2.2.2
 
     # csr3
-    Should Be Equal  ${csr3_interfaces}[interface][GigabitEthernet2][protocol]  up
-    Should Be Equal  ${csr3_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.23.3
-    Should Be Equal  ${csr3_interfaces}[interface][Loopback0][ip_address]  3.3.3.3
+    ${output}=  Should Be Equal  ${csr3_interfaces}[interface][GigabitEthernet2][protocol]  up
+    ${output}=  Should Be Equal  ${csr3_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.23.3
+    ${output}=  Should Be Equal  ${csr3_interfaces}[interface][Loopback0][ip_address]  3.3.3.3
+
+    ${err_msg}=  Set Variable  "FAILURE: device interfaces do not seem to be configured properly. ${output}"    
+    [Teardown]  [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
