@@ -25,48 +25,24 @@ Interfaces ansible playbook should exist
     File Should Exist    /workspace/ansible/configure-interfaces.yml 
     [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
 
-Verify IP address configurations
-    ${err_msg}=  Set Variable  "FAILURE: interfaces not configured properly"
+Loop over devices and verify IP address configurations
     FOR  ${device}  ${data}    IN    &{devices}
         # Load device data from hostvars file
-        ${device_hostvars_yaml}=  Get File  /workspace/ansible/host_vars/testlab-${device}.yml
+        ${device_hostvars_yaml}=  Get File  ../host_vars/testlab-${device}.yml
         ${hostvars}=  yaml.Safe Load  ${device_hostvars_yaml}
 
         # parse show ip interface
         ${output}=  parse "show ip interface brief" on device "${device}"
 
-        # test
-        FOR  ${intf}  IN  ${hostvars}[l3_interfaces]
-            Log To Console  ${intf}
-            ${name}=  Set Variable  ${intf}[name]
-            ${ip_address}=  Set Variable  ${intf}[ipv4][0][address]
-            Should Be Equal  ${csr1_interfaces}[interface][${name}][protocol]  up
-            Should Be Equal  ${csr1_interfaces}[interface][${name}][ip_address]  ${ip_address}
+        FOR  ${intf}  IN  @{hostvars}[l3_interfaces]
+            ${name}=  Set Variable   ${intf}[name]
+            ${ip_address}=  Evaluate  "${intf}[ipv4][0][address]".split("/")[0]
+            Log To Console  ${device} - expected: ${name}:${ip_address} found: ${name}:${output}[interface][${name}][ip_address] 
+            TRY   
+                Should Be Equal  ${output}[interface][${name}][protocol]  up
+                Should Be Equal  ${output}[interface][${name}][ip_address]  ${ip_address}
+            EXCEPT    AS    ${error_message}
+                FAIL    msg="FAILURE: interfaces not configured properly ${error_message}"
+            END
         END
     END
-    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg}
-
-#Verify IP address configurations
-#    ${csr1_interfaces}=  parse "show ip interface brief" on device "csr1"
-#    ${csr2_interfaces}=  parse "show ip interface brief" on device "csr2"
-#    ${csr3_interfaces}=  parse "show ip interface brief" on device "csr3"
-#
-#    # csr1
-#    ${output}=  Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][protocol]  up
-#    ${output}=  Should Be Equal  ${csr1_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.1
-#    ${output}=  Should Be Equal  ${csr1_interfaces}[interface][Loopback0][ip_address]  1.1.1.1
-#
-#    # csr2
-#    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet2][protocol]  up
-#    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet3][protocol]  up
-#    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.12.2
-#    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][GigabitEthernet3][ip_address]  192.168.23.2
-#    ${output}=  Should Be Equal  ${csr2_interfaces}[interface][Loopback0][ip_address]  2.2.2.2
-#
-#    # csr3
-#    ${output}=  Should Be Equal  ${csr3_interfaces}[interface][GigabitEthernet2][protocol]  up
-#    ${output}=  Should Be Equal  ${csr3_interfaces}[interface][GigabitEthernet2][ip_address]  192.168.23.3
-#    ${output}=  Should Be Equal  ${csr3_interfaces}[interface][Loopback0][ip_address]  3.3.3.3
-#
-#    ${err_msg}=  Set Variable  "FAILURE: device interfaces do not seem to be configured properly. ${output}"    
-#    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
