@@ -4,6 +4,16 @@
   gather_facts: false
 
   tasks:
+    - name: validate playbook exists
+      stat:
+        path: "/workspace/ansible/configure-ntp.yml"
+      register: playbook_result
+
+    - name: assert that configure-ntp.yml exists
+      assert:
+        that: (playbook_result.stat.isreg is defined) and (playbook_result.stat.isreg)
+        fail_msg: "FAILURE: Playbook configure-ntp.yml does not exist."
+
     - name: retrieve NTP Server Settings
       cisco.ios.ios_ntp_global:
         state: gathered

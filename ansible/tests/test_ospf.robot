@@ -18,6 +18,11 @@ Initialize
 Connect To Devices
     connect to all devices
 
+OSPF ansible playbook should exist
+    ${err_msg}=  Set Variable  "FAILURE: configure-ospf.yml does not seem to be created"
+    File Should Exist    /workspace/ansible/configure-ospf.yml 
+    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
+
 OSPF 100 should be configured on all devices
     ${err_msg}=  Set Variable  "FAILURE: OSPF 100 is not configured"
     FOR  ${device}  ${data}    IN    &{devices}

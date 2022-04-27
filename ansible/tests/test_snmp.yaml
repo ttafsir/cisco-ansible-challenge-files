@@ -4,6 +4,15 @@
   gather_facts: false
 
   tasks:
+    - name: validate playbook exists
+      stat:
+        path: "/workspace/ansible/configure-snmp.yml"
+      register: playbook_result
+
+    - name: assert that configure-snmp.yml exists
+      assert:
+        that: (playbook_result.stat.isreg is defined) and (playbook_result.stat.isreg)
+        fail_msg: "FAILURE: Playbook configure-snmp.yml does not exist."
 
     - name: retrieve SNMP Server Settings
       cisco.ios.ios_snmp_server:
