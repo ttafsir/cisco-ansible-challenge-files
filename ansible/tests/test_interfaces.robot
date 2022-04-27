@@ -13,9 +13,7 @@ ${testbed}      testbed.yaml
 
 Initialize
     Log To Console  using tested ${testbed}
-
-    # select the testbed to use
-    use testbed "${testbed}"
+    use testbed "${testbed}"     # select the testbed file to use
 
 Connect To Devices
     connect to all devices
@@ -44,6 +42,6 @@ Verify interfaces are up with correct IP address
             Should Be Equal  ${cli_output}[interface][${name}][protocol]  up
             Should Be Equal  ${output}[interface][${name}][ip_address]  ${ip_address}
         EXCEPT    AS    ${error_message}
-            FAIL    msg="FAILURE: interfaces. ${error_message}"
+            FAIL    msg="FAILURE: interfaces    ${error_message}"
         END
     END
