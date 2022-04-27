@@ -4,6 +4,7 @@ Library        pyats.robot.pyATSRobot
 Library        genie.libs.robot.GenieRobot
 Library	       OperatingSystem
 Library        yaml
+Resource       challenge.resource
 Variables      ${EXECDIR}/testbed.yaml 
 
 *** Variables ***
@@ -31,17 +32,4 @@ Loop over devices and verify IP address configurations
 
         ${output}=  parse "show ip interface brief" on device "${device}"
         Verify interfaces are up with correct IP address    ${output}   ${hostvars}[l3_interfaces]
-    END
-
-Verify interfaces are up with correct IP address
-    [Arguments]     ${cli_output}  ${interfaces}
-    FOR  ${intf}  IN  ${interfaces}
-        ${name}=  Set Variable   ${intf}[name]
-        ${ip_address}=  Evaluate  "${intf}[ipv4][0][address]".split("/")[0]
-        TRY   
-            Should Be Equal  ${cli_output}[interface][${name}][protocol]  up
-            Should Be Equal  ${output}[interface][${name}][ip_address]  ${ip_address}
-        EXCEPT    AS    ${error_message}
-            FAIL    msg="FAILURE: interfaces    ${error_message}"
-        END
     END
