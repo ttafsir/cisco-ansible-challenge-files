@@ -2,29 +2,27 @@
 Library        Collections
 Library        pyats.robot.pyATSRobot
 Library        genie.libs.robot.GenieRobot
+Variables      ${EXECDIR}/testbed.yaml 
 
 *** Variables ***
-${testbed}      testbed.yaml
+${testbed_file}      testbed.yaml
 
 *** Test Cases ***
 
 Initialize
-    Log To Console  using tested ${testbed}
+    Log To Console  using tested ${testbed_file}
 
     # select the testbed to use
-    use testbed "${testbed}"
+    use testbed "${testbed_file}"
 
 Connect To Devices
     connect to all devices
 
 OSPF 100 should be configured on all devices
-    ${csr1_ospf}=  parse "show ip ospf" on device "csr1"
-    ${csr2_ospf}=  parse "show ip ospf" on device "csr2"
-    ${csr3_ospf}=  parse "show ip ospf" on device "csr3"
-
-    Should Contain  ${csr1_ospf}[vrf][default][address_family][ipv4][instance]  100
-    Should Contain  ${csr1_ospf}[vrf][default][address_family][ipv4][instance]  100
-    Should Contain  ${csr1_ospf}[vrf][default][address_family][ipv4][instance]  100
+    FOR    ${device}    IN    @{testbed["devices"]}
+        ${output}=  parse "show ip ospf" on device "${device}"
+        Should Contain  ${output}[vrf][default][address_family][ipv4][instance]  100    msg="FAILURE: OSPF 100 is not configured"
+    END
 
 OSPF 100 neighbors should match expected neighbors
     ${csr1_ospf_output}=  parse "show ip ospf neighbor" on device "csr1"
