@@ -19,12 +19,16 @@ Connect To Devices
     connect to all devices
 
 OSPF 100 should be configured on all devices
-    FOR    ${device}    IN    @{testbed["devices"]}
+    ${err_msg}=  Set Variable  "FAILURE: OSPF 100 is not configured"
+    FOR  ${device}  ${data}    IN    &{devices}
+        Log To Console  ${device}
         ${output}=  parse "show ip ospf" on device "${device}"
-        Should Contain  ${output}[vrf][default][address_family][ipv4][instance]  100    msg="FAILURE: OSPF 100 is not configured"
+        Should Contain  ${output}[vrf][default][address_family][ipv4][instance]  100    msg=${err_msg}
     END
+    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg}
 
 OSPF 100 neighbors should match expected neighbors
+    ${err_msg}=  Set Variable  "FAILURE: OSPF 100 process or neighbors are not configured properly"
     ${csr1_ospf_output}=  parse "show ip ospf neighbor" on device "csr1"
     ${csr2_ospf_output}=  parse "show ip ospf neighbor" on device "csr2"
     ${csr3_ospf_output}=  parse "show ip ospf neighbor" on device "csr3"
@@ -38,3 +42,4 @@ OSPF 100 neighbors should match expected neighbors
     Should Be Equal  ${csr2_g2_neigh}[0][address]  192.168.12.1
     Should Be Equal  ${csr2_g3_neigh}[0][address]  192.168.23.3
     Should Be Equal  ${csr3_g2_neigh}[0][address]  192.168.23.2
+    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg}
