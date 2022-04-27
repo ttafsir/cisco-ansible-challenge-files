@@ -3,6 +3,7 @@ Library        Collections
 Library        pyats.robot.pyATSRobot
 Library        genie.libs.robot.GenieRobot
 Library	       OperatingSystem
+Library        yaml
 Variables      ${EXECDIR}/testbed.yaml 
 
 *** Variables ***
