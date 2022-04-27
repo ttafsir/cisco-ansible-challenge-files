@@ -27,22 +27,23 @@ Interfaces ansible playbook should exist
 
 Loop over devices and verify IP address configurations
     FOR  ${device}  ${data}    IN    &{devices}
-        # Load device data from hostvars file
+
         ${device_hostvars_yaml}=  Get File  ../host_vars/testlab-${device}.yml
         ${hostvars}=  yaml.Safe Load  ${device_hostvars_yaml}
 
-        # parse show ip interface
         ${output}=  parse "show ip interface brief" on device "${device}"
+        Verify interfaces are up with correct IP address    ${output}   ${hostvars}[l3_interfaces]
+    END
 
-        FOR  ${intf}  IN  @{hostvars}[l3_interfaces]
-            ${name}=  Set Variable   ${intf}[name]
-            ${ip_address}=  Evaluate  "${intf}[ipv4][0][address]".split("/")[0]
-            Log To Console  ${device} - expected: ${name}:${ip_address} found: ${name}:${output}[interface][${name}][ip_address] 
-            TRY   
-                Should Be Equal  ${output}[interface][${name}][protocol]  up
-                Should Be Equal  ${output}[interface][${name}][ip_address]  ${ip_address}
-            EXCEPT    AS    ${error_message}
-                FAIL    msg="FAILURE: interfaces not configured properly ${error_message}"
-            END
+Verify interfaces are up with correct IP address
+    [arguments]     ${cli_output}  ${interfaces}
+    FOR  ${intf}  IN  ${interfaces}
+        ${name}=  Set Variable   ${intf}[name]
+        ${ip_address}=  Evaluate  "${intf}[ipv4][0][address]".split("/")[0]
+        TRY   
+            Should Be Equal  ${cli_output}[interface][${name}][protocol]  up
+            Should Be Equal  ${output}[interface][${name}][ip_address]  ${ip_address}
+        EXCEPT    AS    ${error_message}
+            FAIL    msg="FAILURE: interfaces. ${error_message}"
         END
     END
