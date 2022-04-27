@@ -3,6 +3,7 @@ Library        Collections
 Library        pyats.robot.pyATSRobot
 Library        genie.libs.robot.GenieRobot
 Library	       OperatingSystem
+Library        yaml
 Variables      ${EXECDIR}/testbed.yaml 
 
 *** Variables ***
@@ -12,9 +13,7 @@ ${testbed}      testbed.yaml
 
 Initialize
     Log To Console  using tested ${testbed}
-
-    # select the testbed to use
-    use testbed "${testbed}"
+    use testbed "${testbed}"     # select the testbed file to use
 
 Connect To Devices
     connect to all devices
@@ -24,23 +23,25 @@ Interfaces ansible playbook should exist
     File Should Exist    /workspace/ansible/configure-interfaces.yml 
     [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
 
-Verify IP address configurations
-    ${err_msg}=  Set Variable  "FAILURE: interfaces not configured properly"
+Loop over devices and verify IP address configurations
     FOR  ${device}  ${data}    IN    &{devices}
-        # Load device data from hostvars file
-        ${device_hostvars_yaml}=  Get File  /workspace/ansible/testlab-${device}.yaml
+
+        ${device_hostvars_yaml}=  Get File  ../host_vars/testlab-${device}.yml
         ${hostvars}=  yaml.Safe Load  ${device_hostvars_yaml}
 
-        # parse show ip interface
         ${output}=  parse "show ip interface brief" on device "${device}"
+        Verify interfaces are up with correct IP address    ${output}   ${hostvars}[l3_interfaces]
+    END
 
-        # test
-        FOR  ${intf}  IN  ${hostvars}[l3_interfaces]
-            ${name}=  Set Variable  ${intf}[name]
-            ${ip_address}=  Set Variable  ${intf}[ipv4][address]
-            Should Be Equal  ${csr1_interfaces}[interface][${name}][protocol]  up
-            Should Be Equal  ${csr1_interfaces}[interface][${name}][ip_address]  ${ip_address}
+Verify interfaces are up with correct IP address
+    [arguments]     ${cli_output}  ${interfaces}
+    FOR  ${intf}  IN  ${interfaces}
+        ${name}=  Set Variable   ${intf}[name]
+        ${ip_address}=  Evaluate  "${intf}[ipv4][0][address]".split("/")[0]
+        TRY   
+            Should Be Equal  ${cli_output}[interface][${name}][protocol]  up
+            Should Be Equal  ${output}[interface][${name}][ip_address]  ${ip_address}
+        EXCEPT    AS    ${error_message}
+            FAIL    msg="FAILURE: interfaces    ${error_message}"
         END
     END
-    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg}
-
