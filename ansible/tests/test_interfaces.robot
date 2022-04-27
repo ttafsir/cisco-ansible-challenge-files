@@ -2,6 +2,7 @@
 Library        Collections
 Library        pyats.robot.pyATSRobot
 Library        genie.libs.robot.GenieRobot
+Library	       OperatingSystem
 
 *** Variables ***
 ${testbed}      testbed.yaml
