@@ -17,6 +17,11 @@ Initialize
 Connect To Devices
     connect to all devices
 
+Interfaces ansible playbook should exist
+    ${err_msg}=  Set Variable  "FAILURE: configure-interfaces.yml does not seem to be created"
+    File Should Exist    /workspace/ansible/configure-interfaces.yml 
+    [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
+
 Verify IP address configurations
     ${csr1_interfaces}=  parse "show ip interface brief" on device "csr1"
     ${csr2_interfaces}=  parse "show ip interface brief" on device "csr2"
