@@ -4,6 +4,16 @@
   gather_facts: false
 
   tasks:
+    - name: validate playbook exists
+      stat:
+        path: "/workspace/ansible/configure-system.yml"
+      register: playbook_result
+
+    - name: assert that configure-system.yml exists
+      assert:
+        that: (playbook_result.stat.isreg is defined) and (playbook_result.stat.isreg)
+        fail_msg: "FAILURE: Playbook configure-system.yml does not exist."
+
     - name: run show command on remote devices
       ios_command:
         commands: show running-config
