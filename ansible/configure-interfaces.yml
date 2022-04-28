@@ -1,6 +1,6 @@
 ---
 - name: CONFIGURE INTERFACES
-  hosts: vr-csr
+  hosts: newsite
   gather_facts: false
 
   tasks:
