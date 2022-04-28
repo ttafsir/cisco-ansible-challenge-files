@@ -1,6 +1,6 @@
 ---
 - name: CONFIGURE OSPF ROUTING
-  hosts: vr-csr
+  hosts: newsite
   gather_facts: false
 
   tasks:
