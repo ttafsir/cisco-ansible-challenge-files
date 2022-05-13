@@ -1,0 +1,7 @@
+---
+- name: EXAMPLE PLAYBOOK
+  hosts: host_or_group
+  gather_facts: false
+
+  tasks:
+    - name: First Example Task
