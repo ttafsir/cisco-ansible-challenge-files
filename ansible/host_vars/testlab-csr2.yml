@@ -2,10 +2,10 @@
 hostname: testlab-csr2
 interfaces:
   - name: GigabitEthernet2
-    description: testlab-csr1:GigabitEthernet2 - configured by Ansible
+    description: testlab-csr1:GigabitEthernet2
     enabled: true
   - name: GigabitEthernet3
-    description: testlab-csr3:GigabitEthernet2 - configured by Ansible
+    description: testlab-csr3:GigabitEthernet2
     enabled: true
 
 l3_interfaces:
