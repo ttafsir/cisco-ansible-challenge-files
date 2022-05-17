@@ -32,8 +32,8 @@ snmp_config:
 
 ntp_config:
   servers:
-    - server: 0.north-america.pool.ntp.org
+    - server: 192.227.183.3
       version: 2
-    - server: 1.north-america.pool.ntp.org
+    - server: 12.167.151.1
       version: 2
   source: GigabitEthernet1
