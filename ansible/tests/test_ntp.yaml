@@ -21,7 +21,7 @@
 
     - name: assert that ntp servers match
       assert:
-        that: gathered_ntp_config.gathered.servers|default(none) == ntp_config.servers
+        that: gathered_ntp_config.gathered.servers|sort(attribute='server')|default(none) == ntp_config.servers|sort(attribute='server')
         fail_msg: "FAILURE: NTP Servers do not match. Expected: {{ ntp_config.servers }} Found: {{ gathered_ntp_config.gathered.servers | default(none) }}"
 
     - name: assert that ntp source matches
