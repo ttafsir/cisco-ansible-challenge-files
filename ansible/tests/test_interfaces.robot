@@ -36,5 +36,5 @@ Loop over devices and verify IP address configurations and descriptions match
         Verify interfaces are up with correct IP address    ${output}   ${hostvars}[l3_interfaces]
 
         ${descriptionout}=  parse "show interfaces description" on device "${device}"
-        Verify descriptions match    ${descriptionout}   ${hostvars}[interfaces]
+        Verify descriptions match    ${device}  ${descriptionout}   ${hostvars}[interfaces]
     END
