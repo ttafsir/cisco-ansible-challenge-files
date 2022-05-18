@@ -7,7 +7,7 @@ system_config:
   - net.example.com
   - net.example.net
   lookup_source: GigabitEthernet1
-  lookup_enabled: yes
+  lookup_enabled: false
   name_servers:
     - 10.255.0.1
     - 8.8.8.8
