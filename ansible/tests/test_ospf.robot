@@ -27,7 +27,7 @@ OSPF ansible playbook should exist
 
 OSPF 100 should be configured on all devices with proper router-id
     FOR  ${device}  ${data}    IN    &{devices}
-        ${err_msg}=  Set Variable  "FAILURE: OSPF 100 is not configured on ${device}"
+        ${err_msg}=  Set Variable  "FAILURE: OSPF 100 is not configured properly on ${device}"
         Log To Console  ${device}
 
         ${device_hostvars_yaml}=  Get File  ../host_vars/testlab-${device}.yml
