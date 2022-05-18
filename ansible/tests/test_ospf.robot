@@ -3,6 +3,7 @@ Library        Collections
 Library        pyats.robot.pyATSRobot
 Library        genie.libs.robot.GenieRobot
 Library	       OperatingSystem
+Library        yaml
 Variables      ${EXECDIR}/testbed.yaml 
 
 *** Variables ***
@@ -24,12 +25,17 @@ OSPF ansible playbook should exist
     File Should Exist    /workspace/ansible/configure-ospf.yml 
     [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg} 
 
-OSPF 100 should be configured on all devices
-    ${err_msg}=  Set Variable  "FAILURE: OSPF 100 is not configured"
+OSPF 100 should be configured on all devices with proper router-id
     FOR  ${device}  ${data}    IN    &{devices}
+        ${err_msg}=  Set Variable  "FAILURE: OSPF 100 is not configured properly on ${device}"
         Log To Console  ${device}
+
+        ${device_hostvars_yaml}=  Get File  ../host_vars/testlab-${device}.yml
+        ${hostvars}=  yaml.Safe Load  ${device_hostvars_yaml}
+
         ${output}=  parse "show ip ospf" on device "${device}"
-        Should Contain  ${output}[vrf][default][address_family][ipv4][instance]  100    msg=${err_msg}
+        Should Contain  ${output}[vrf][default][address_family][ipv4][instance] 100    msg=${err_msg}
+        Should Contain  ${output}[vrf][default][address_family][ipv4][instance][100][router_id]         ${hostvars}[routing][ospf][processes][0][router_id]     msg=${err_msg}
     END
     [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg}
 
