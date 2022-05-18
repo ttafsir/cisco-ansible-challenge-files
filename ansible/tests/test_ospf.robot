@@ -34,7 +34,7 @@ OSPF 100 should be configured on all devices with proper router-id
         ${hostvars}=  yaml.Safe Load  ${device_hostvars_yaml}
 
         ${output}=  parse "show ip ospf" on device "${device}"
-        Should Contain  ${output}[vrf][default][address_family][ipv4][instance] 100    msg=${err_msg}
+        Should Contain  ${output}[vrf][default][address_family][ipv4][instance]     100    msg=${err_msg}
         Should Contain  ${output}[vrf][default][address_family][ipv4][instance][100][router_id]         ${hostvars}[routing][ospf][processes][0][router_id]     msg=${err_msg}
     END
     [Teardown]  Run Keyword If Test Failed  FAIL  msg=${err_msg}
