@@ -19,12 +19,20 @@
         state: gathered
       register: gathered_ntp_config
 
+    - name: assert that ntp servers do not have the source interface set
+      assert:
+        that: ntp_server.source is not defined
+        fail_msg: "FAILURE: NTP server {{ ntp_server.server }} on {{ inventory_hostname }} has source interface defined."
+      loop: "{{ gathered_ntp_config.gathered.servers }}"
+      loop_control:
+        loop_var: ntp_server
+
     - name: assert that ntp servers match
       assert:
         that: gathered_ntp_config.gathered.servers|sort(attribute='server')|default(none) == ntp_config.servers|sort(attribute='server')
-        fail_msg: "FAILURE: NTP Servers do not match. Expected: {{ ntp_config.servers }} Found: {{ gathered_ntp_config.gathered.servers | default(none) }}"
+        fail_msg: "FAILURE: NTP Servers do not match on {{ inventory_hostname }}. Expected: {{ ntp_config.servers }} Found: {{ gathered_ntp_config.gathered.servers | default(none) }}"
 
     - name: assert that ntp source matches
       assert:
         that: gathered_ntp_config.gathered.source|default(none) == ntp_config.source
-        fail_msg: "FAILURE: NTP Servers do not match. Expected: {{ ntp_config.source }} Found: {{ gathered_ntp_config.gathered.source | default(none) }}"
+        fail_msg: "FAILURE: NTP Servers do not match on {{ inventory_hostname }}. Expected: {{ ntp_config.source }} Found: {{ gathered_ntp_config.gathered.source | default(none) }}"
