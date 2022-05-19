@@ -36,20 +36,40 @@
         that: parsed_output.hostname == inventory_hostname
         fail_msg: "FAILURE: Hostname. Expected: {{ inventory_hostname }} Found: {{ parsed_output.hostname }}"        
 
+    - name: assert that ip domain name has been defined
+      assert:
+        that: parsed_output.ip_domain_name is defined
+        fail_msg: "FAILURE: IP domain name configuration on {{ inventory_hostname }} is missing."
+
     - name: assert that ip domain name matches
       assert:
         that: parsed_output.ip_domain_name == system_config.domain_name
         fail_msg: "FAILURE: IP domain name configuration on {{ inventory_hostname }}. Expected: {{ system_config.domain_name }} Found: {{ parsed_output.ip_domain_name }}" 
+
+    - name: assert that ip domain list has been defined
+      assert:
+        that: parsed_output.domain_list is defined
+        fail_msg: "FAILURE: IP domain list configuration on {{ inventory_hostname }} is missing."
 
     - name: assert that ip domain search list matches
       assert:
         that: parsed_output.domain_list|sort == system_config.domain_search|sort
         fail_msg: "FAILURE: IP domain search list configuration on {{ inventory_hostname }}. Expected: {{ system_config.domain_search }} Found: {{ parsed_output.domain_list }}" 
 
+    - name: assert that lookup source interface is defined
+      assert:
+        that: parsed_output.lookup_source_interface is defined
+        fail_msg: "FAILURE: Lookup source configuration on {{ inventory_hostname }} is missing."
+
     - name: assert that lookup source interface matches
       assert:
         that: parsed_output.lookup_source_interface == system_config.lookup_source
         fail_msg: "FAILURE: Lookup source configuration on {{ inventory_hostname }}. Expected: {{ system_config.lookup_source }} Found: {{ parsed_output.lookup_source_interface }}" 
+
+    - name: assert that name servers are defined
+      assert:
+        that: parsed_output.name_servers is defined
+        fail_msg: "FAILURE: Name server configuration on {{ inventory_hostname }} is missing."
 
     - name: assert that name servers match
       assert:
@@ -59,4 +79,4 @@
     - name: assert that ip lookup is disabled
       assert:
         that: parsed_output.lookup_disabled is defined
-        fail_msg: "FAILURE: Lookup is enabled. Expected: 'no ip domain lookup' on {{ inventory_hostname }}" 
+        fail_msg: "FAILURE: Lookup is enabled. Expected: 'no ip domain lookup' on {{ inventory_hostname }}"

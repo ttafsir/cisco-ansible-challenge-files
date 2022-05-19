@@ -19,20 +19,40 @@
         state: gathered
       register: gathered_snmp_config
 
+    - name: assert that communities have been defined
+      assert:
+        that: gathered_snmp_config.gathered.communities is defined
+        fail_msg: "FAILURE: Community string configuration on {{ inventory_hostname }} is missing."
+
     - name: assert that communities match
       assert:
         that: gathered_snmp_config.gathered.communities|default(none) == snmp_config.communities
         fail_msg: "FAILURE: Community string mismatch on {{ inventory_hostname }}. Expected: {{ snmp_config.communities }} Found: {{ gathered_snmp_config.gathered.communities | default(none) }}"    
+
+    - name: assert that snmp contact is defined
+      assert:
+        that: gathered_snmp_config.gathered.contact is defined
+        fail_msg: "FAILURE: SNMP contact configuration on {{ inventory_hostname }} is missing."
 
     - name: assert that snmp contact matches
       assert:
         that: gathered_snmp_config.gathered.contact|default(none) == snmp_config.contact
         fail_msg: "FAILURE: SNMP contact mismatch on {{ inventory_hostname }}. Expected: {{ snmp_config.contact }} Found: {{ gathered_snmp_config.gathered.contact | default(none) }}"  
 
+    - name: assert that snmp host configuration is defined
+      assert:
+        that: gathered_snmp_config.gathered.hosts is defined
+        fail_msg: "FAILURE: SNMP host configuration on {{ inventory_hostname }} is missing."
+
     - name: assert that snmp host configuration matches
       assert:
         that: gathered_snmp_config.gathered.hosts|default(none) == snmp_config.hosts
         fail_msg: "FAILURE: SNMP host mismatch on {{ inventory_hostname }}. Expected: {{ snmp_config.hosts }} Found: {{ gathered_snmp_config.gathered.hosts | default(none) }}"  
+
+    - name: assert that snmp trap configuration is defined
+      assert:
+        that: gathered_snmp_config.gathered.traps is defined
+        fail_msg: "FAILURE: SNMP trap configuration on {{ inventory_hostname }} is missing."
 
     - name: assert that snmp traps are enabled
       assert:

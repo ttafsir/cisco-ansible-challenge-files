@@ -19,6 +19,11 @@
         state: gathered
       register: gathered_ntp_config
 
+    - name: assert that ntp configuration is defined
+      assert:
+        that: gathered_ntp_config.gathered.servers is defined
+        fail_msg: "FAILURE: NTP configuration on {{ inventory_hostname }} is missing."
+
     - name: assert that ntp servers do not have the source interface set
       assert:
         that: ntp_server.source is not defined
@@ -35,4 +40,4 @@
     - name: assert that ntp source matches
       assert:
         that: gathered_ntp_config.gathered.source|default(none) == ntp_config.source
-        fail_msg: "FAILURE: NTP Servers do not match on {{ inventory_hostname }}. Expected: {{ ntp_config.source }} Found: {{ gathered_ntp_config.gathered.source | default(none) }}"
+        fail_msg: "FAILURE: NTP source interface does not match on {{ inventory_hostname }}. Expected: {{ ntp_config.source }} Found: {{ gathered_ntp_config.gathered.source | default(none) }}"
