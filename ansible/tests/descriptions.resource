@@ -8,6 +8,6 @@ Verify descriptions match
         TRY
             Should Be Equal  ${cli_output}[interfaces][${name}][description]  ${description}
         EXCEPT    AS    ${error_message}
-            FAIL    msg="FAILURE: ${error_message}. Please check the configuration of ${name} on ${device}..."
+            FAIL    msg="FAILURE: ${error_message}. Please check the configuration of ${name} on ${device}."
         END
     END

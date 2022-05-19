@@ -33,7 +33,7 @@ Loop over devices and verify IP address configurations and descriptions match
         ${hostvars}=  yaml.Safe Load  ${device_hostvars_yaml}
 
         ${output}=  parse "show ip interface brief" on device "${device}"
-        Verify interfaces are up with correct IP address    ${output}   ${hostvars}[l3_interfaces]
+        Verify interfaces are up with correct IP address    ${device}   ${output}   ${hostvars}[l3_interfaces]
 
         ${descriptionout}=  parse "show interfaces description" on device "${device}"
         Verify descriptions match    ${device}  ${descriptionout}   ${hostvars}[interfaces]
